@@ -1,6 +1,8 @@
 #include<iostream>
 #include<stack>
 
+
+
 using namespace std;
 
 
@@ -55,19 +57,6 @@ bool checkConflict (int r, int c, stack<int>qStack){
 	return result;
 
 
-
-	//pop off stack and decrease stackRow by 1
-//	qStack.pop();
-//	stackRow=stackRow-1;
-
-//	if (qStack.empty()){
-
-//		return result;
-//	}else{
-	//	checkConflict(r,c,qStack);
-//	}
-
-
 }
 
 
@@ -75,7 +64,7 @@ bool checkConflict (int r, int c, stack<int>qStack){
 
 
 //recursive function for placing queens
-void placement(int N,stack <int> queenStack,int ro, int col, int fill){
+bool placement(int N,stack <int> queenStack,int ro, int col, int fill){
 
 
 	//if there are no conflicts
@@ -95,23 +84,25 @@ void placement(int N,stack <int> queenStack,int ro, int col, int fill){
 			//print stack?
 			while (!queenStack.empty()){
 
-				qStack.pop();
-				std::cout<<'\n'<<"Position: "<<ro<<", "<<queenStack.top();
-				row=row-1;
+				queenStack.pop();
+				cout<<'\n'<<"Position "<<position<<": ("<<ro<<", "<<queenStack.top()<<")";
+				ro=ro-1;
 				position=position-1;
 
 			}
 		
-			//end program
+			cout<<"STACK NOW EMPTY";
+			return true;
 			
 			
 
 		}else{
 			
 			//move to next row and "place" queen in the first column
-			row=row+1;
-			column=1;
-			qPlacement.push(column);
+			ro=ro+1;
+			col=1;
+			queenStack.push(col);
+		}
 			
 		
 
@@ -122,6 +113,8 @@ void placement(int N,stack <int> queenStack,int ro, int col, int fill){
 		queenStack.pop();
 		col=col+1;
 		queenStack.push(col);
+
+		//cout<<"INSIDE CONFLICT AND ROOM TO MOVE";
 		
 
 	//if there is conflict and no room to shift
@@ -140,14 +133,12 @@ void placement(int N,stack <int> queenStack,int ro, int col, int fill){
 		queenStack.pop();
 		col=col+1;
 		queenStack.push(col);
+
+		//cout<<"INSIDE CONFLICT AND NO ROOM";
 		
 
 
 	}
-
-	//call itself and pass everything
-	placement(N,queenStack,ro,col,fill);
-
 
 }	
 
@@ -174,20 +165,13 @@ int main ()
 	int filled = 1;
 
 	//call recursive function, pass current queen position, filled, stack, N
-	placement (N,qPlacement,row,column,filled);
+	if (placement (N,qPlacement,row,column,filled)==true){
 
-	return 0;
+		return 0;
+	}
+
+	
 	
 }
-
-
-
-
-/*
- *
- * 1. how to reference array?  Pass by reference between functions?
- * 2. how to end program inside placement()
- *
- * */
 
 
