@@ -1,18 +1,42 @@
 #include <string>
 #include <stack>
+#include<iostream>
+
+
+
 using namespace std;
-bool mess_with_stack(const stack<string>* s);
 
-int main{}
+void messStack(stack<int>* queenStack)
 {
-  bool test;
-  stack<string> s;
-  s.push("something");
-  test = mess_with_stack(&s);
+	//queenStack.push(3);
+	queenStack->push(3);
+	cout<<"inside function, 3 pushed";
+	
+	//while (!queenStack.empty()){
+	//	cout<<'\n'<<queenStack.top();
+	//  	queenStack.pop();
+
 }
 
-bool mess_with_stack(const stack<string>* s)
+int main()
 {
-   if (s.empty())
-      return true;
+
+	stack<int>qStack;
+	qStack.push(4);
+	cout<<"stack created, 4 pushed ";
+
+	messStack(&qStack);
+
+	cout<<"after function called";
+
+	qStack.push(5);
+
+	while (!qStack.empty()){
+
+		cout<<'\n'<<qStack.top();
+		qStack.pop();
+	}
+
+	return 0;	
 }
+
