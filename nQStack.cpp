@@ -1,8 +1,47 @@
-//recursive function for solving N Queens problem
-recursion(/*i, j, filled, q, N*/){
+//recursive function for checking conflict between queens
+bool checkConflict (int row, int column){
+
+	bool result=false;
+
+	//row coming from top of stack
+	int stackRow=row;
+
+	//get column from stack
+	int stackColumn=qStack.top();
+
+	//if columns or diagnols are the same
+	if (column==stackColumn){
+
+		result=true;
+	}	
+	if ((row+column)==(stackRow+stackColumn){
+
+		result=true;
+	}
+	if ((row-column)==(stackRow+stackColum)){
+		
+		result=true;
+	}
+
+	//pop off stack and decrease stackRow by 1
+	qStack.pop();
+	stackRow=stackRow-1;
+
+	checkConflict(row, column);
+
+	qStack.push(stackColumn);
+
+	return result;
+
+}
+
+
+
+//recursive function for placing queens
+void placement(int N, int row, int column, stack<int>qStack, filled){
 
 	//if there are no conflicts
-	if (/*column doesn't equal any other || row+column doesn't equal any other row+ column*/){
+	if (checkConflict(row, column)==false){
 
 		//increase filled
 		filled=filled+1
@@ -11,46 +50,56 @@ recursion(/*i, j, filled, q, N*/){
 
 			//program has found solution
 
+			//int position=1
+			//
 			//print stack?
-			//while (/*!q.empty()*/){
-			//	cout<<'\t'<<q.top();
-			//	q.pop()
-			//}
-			//cout<<'\n';
+			//while the stack is not empty
+			//	pop off top
+			//	print (position+row+column);
+			//	row=row-1
+			//	position=position-1
+			//
 			
 			//end program
+
 		}else{
 			
 			//move to next row and "place" queen in the first column
-			i=i+1;
-			q.push((i, j));
+			row=row+1;
+			column=1;
+			qStack.push(column);
+			
 		}
 
 	//if there is conflict and room to shift
-	}else if(/*if conflict and room to shift (j<N?)*/){
+	}else if(checkConflict(row, column)==true && column!=N){
 
-		//move current queen to the right, push new position on stack
+		column=column+1;
 		
 
 	//if there is conflict and no room to shift
-	}else if(/*there is a conflict and j>=N (no room to shift))*/){
+	}else if(checkConflict(row, column)==true && column==){
 
 		//pop stack till a queen is found that can shift
-		while (/*no queen can be shifted !j<N*/){
+		while (column=N){
 
-			q.pop();
+			qStack.pop();
 			filled=filled-1;
+			column=qStack.top();
 		}
 
-		//when shiftable is found, shift
-		j=j+1;
-		//push??
+		//when movable queen is found, move it one over (pop off, increase, push)
+		qStack.pop();
+		column=column+1;
+		qStack.push(column);
+		
 
 
 	}
 
 	//call itself and pass everything
-	recursion(i ,j);
+	recursion(row, column,);
+
 
 
 //main function
@@ -61,15 +110,18 @@ int main (){
 
 	//initialize stack for queen placement
 	stack <int> qPlacement	
-	/*initialize first queen/position and push onto stack
-	 * int i=0? int j=0?
-	 * qPlacement.push((i, j));?*/
+
+	//initialize first queen/position and push onto stack
+	int row=1;
+	int column=1;
+	qPlacement.push(column);
 
 	//init filled to 0
 	int filled = 0
 
 	//call recursive function, pass current queen position, filled, stack, N
-	recursion (/*i, j, filled, qPlacement, N*/);
+	placement (N, row, column, qPlacement, filled);
 
+	return 0;
 	
 }
