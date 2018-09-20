@@ -1,127 +1,193 @@
-//recursive function for checking conflict between queens
-bool checkConflict (int row, int column){
+#include<iostream>
+#include<stack>
 
+using namespace std;
+
+
+
+//recursive function for checking conflict between queens
+bool checkConflict (int r, int c, stack<int>qStack){
+
+	
 	bool result=false;
 
 	//row coming from top of stack
-	int stackRow=row;
+	int stackRow=r;
 
 	//get column from stack
 	int stackColumn=qStack.top();
 
-	//if columns or diagnols are the same
-	if (column==stackColumn){
+	if (r==1){
 
-		result=true;
-	}	
-	if ((row+column)==(stackRow+stackColumn){
+		result=false;
+	}else{
 
-		result=true;
-	}
-	if ((row-column)==(stackRow+stackColum)){
+		//if columns or diagnols are the same
+		if (c==stackColumn){
+
+			result=true;
+		}	
+		if ((r+c)==(stackRow+stackColumn)){
+
+			result=true;
+		}
+		if ((r-c)==(stackRow+stackColumn)){
 		
-		result=true;
+			result=true;
+		}
+		//if columns or diagnols are the same
+		if (c==stackColumn){
+
+			result=true;
+		}	
+		if ((r+c)==(stackRow+stackColumn)){
+
+			result=true;
+		}
+		if ((r-c)==(stackRow+stackColumn)){
+		
+			result=true;
+		}
 	}
 
-	//pop off stack and decrease stackRow by 1
-	qStack.pop();
-	stackRow=stackRow-1;
-
-	checkConflict(row, column);
-
-	qStack.push(stackColumn);
+	
 
 	return result;
+
+
+
+	//pop off stack and decrease stackRow by 1
+//	qStack.pop();
+//	stackRow=stackRow-1;
+
+//	if (qStack.empty()){
+
+//		return result;
+//	}else{
+	//	checkConflict(r,c,qStack);
+//	}
+
 
 }
 
 
 
+
+
 //recursive function for placing queens
-void placement(int N, int row, int column, stack<int>qStack, filled){
+void placement(int N,stack <int> queenStack,int ro, int col, int fill){
+
 
 	//if there are no conflicts
-	if (checkConflict(row, column)==false){
+	if (checkConflict(ro, col, queenStack)==false){
 
 		//increase filled
-		filled=filled+1
+		fill=fill+1;
 
-		if (filled == N){
+
+		if (fill == N){
 
 			//program has found solution
 
-			//int position=1
-			//
-			//print stack?
-			//while the stack is not empty
-			//	pop off top
-			//	print (position+row+column);
-			//	row=row-1
-			//	position=position-1
-			//
+			//Variable for printing position
+			int position=1;
 			
+			//print stack?
+			while (!queenStack.empty()){
+
+				qStack.pop();
+				std::cout<<'\n'<<"Position: "<<ro<<", "<<queenStack.top();
+				row=row-1;
+				position=position-1;
+
+			}
+		
 			//end program
+			
+			
 
 		}else{
 			
 			//move to next row and "place" queen in the first column
 			row=row+1;
 			column=1;
-			qStack.push(column);
+			qPlacement.push(column);
 			
-		}
+		
 
 	//if there is conflict and room to shift
-	}else if(checkConflict(row, column)==true && column!=N){
+	}else if(checkConflict(ro, col, queenStack)==true && col!=N){
 
-		column=column+1;
+		//pop queen off, increase by 1, push back on (move queen over one spot)
+		queenStack.pop();
+		col=col+1;
+		queenStack.push(col);
 		
 
 	//if there is conflict and no room to shift
-	}else if(checkConflict(row, column)==true && column==){
+	}else if(checkConflict(ro, col, queenStack)==true && col==N){
 
 		//pop stack till a queen is found that can shift
-		while (column=N){
+		while (col=N){
 
-			qStack.pop();
-			filled=filled-1;
-			column=qStack.top();
+			queenStack.pop();
+			ro=ro-1;
+			fill=fill-1;
+			col=queenStack.top();
 		}
 
 		//when movable queen is found, move it one over (pop off, increase, push)
-		qStack.pop();
-		column=column+1;
-		qStack.push(column);
+		queenStack.pop();
+		col=col+1;
+		queenStack.push(col);
 		
 
 
 	}
 
 	//call itself and pass everything
-	recursion(row, column,);
+	placement(N,queenStack,ro,col,fill);
 
 
+}	
 
 //main function
-int main (){
+int main ()
+{
 
 	//initialize N for num of Qs and board size
 	int N=4;
 
 	//initialize stack for queen placement
-	stack <int> qPlacement	
+	stack <int> qPlacement;	
 
 	//initialize first queen/position and push onto stack
 	int row=1;
 	int column=1;
 	qPlacement.push(column);
 
+	//place second queen on board and start placement recursion
+	row=row+1;
+	qPlacement.push(column);
+
 	//init filled to 0
-	int filled = 0
+	int filled = 1;
 
 	//call recursive function, pass current queen position, filled, stack, N
-	placement (N, row, column, qPlacement, filled);
+	placement (N,qPlacement,row,column,filled);
 
 	return 0;
 	
 }
+
+
+
+
+/*
+ *
+ * 1. how to reference array?  Pass by reference between functions?
+ * 2. how to end program inside placement()
+ *
+ * */
+
+
