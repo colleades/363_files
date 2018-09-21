@@ -28,30 +28,18 @@ bool checkConflict (int r, int c, stack<int>qStack){
 		if (c==stackColumn){
 
 			result=true;
-		}	
-		if ((r+c)==(stackRow+stackColumn)){
+			cout<<"INSIDE COLUMN CHECK  ";
+		}else if ((r+c)==(stackRow+stackColumn)){
 
 			result=true;
-		}
-		if ((r-c)==(stackRow+stackColumn)){
+			cout<<"inside diag+ check, result of math: ";
+			cout<<(r+c)<<(stackRow+stackColumn);
+		}else if ((r-c)==(stackRow+stackColumn)){
 		
 			result=true;
+			cout<<"inside diag- check   ";
 		}
-		//if columns or diagnols are the same
-		if (c==stackColumn){
-
-			result=true;
-		}	
-		if ((r+c)==(stackRow+stackColumn)){
-
-			result=true;
-		}
-		if ((r-c)==(stackRow+stackColumn)){
-		
-			result=true;
-		}
-	}
-
+	}	
 	
 
 	return result;
@@ -66,7 +54,7 @@ bool checkConflict (int r, int c, stack<int>qStack){
 //recursive function for placing queens
 bool placement(int N,stack <int> queenStack,int ro, int col, int fill){
 
-
+	
 	//if there are no conflicts
 	if (checkConflict(ro, col, queenStack)==false){
 
@@ -107,14 +95,21 @@ bool placement(int N,stack <int> queenStack,int ro, int col, int fill){
 		
 
 	//if there is conflict and room to shift
-	}else if(checkConflict(ro, col, queenStack)==true && col!=N){
+	}else if(checkConflict(ro, col, queenStack)==true && col<=N){
 
 		//pop queen off, increase by 1, push back on (move queen over one spot)
 		queenStack.pop();
 		col=col+1;
 		queenStack.push(col);
 
-		//cout<<"INSIDE CONFLICT AND ROOM TO MOVE";
+		cout<<"INSIDE CONFLICT & ROOM TO MOVE ";
+		cout<<"col = "<<col<<"  Stack after queen moves over";
+		while (!queenStack.empty()){
+
+			cout<<queenStack.top();
+			queenStack.pop();
+		}
+		
 		
 
 	//if there is conflict and no room to shift
@@ -140,7 +135,24 @@ bool placement(int N,stack <int> queenStack,int ro, int col, int fill){
 
 	}
 
+	fill=fill+1;
+	if (fill>=3){
+
+		return true;
+	}else{
+
+
+
+		placement(N,queenStack,ro,col,fill);
+	}
+
+
+
+	//function calls itself
+
+
 }	
+
 
 //main function
 int main ()
@@ -167,6 +179,7 @@ int main ()
 	//call recursive function, pass current queen position, filled, stack, N
 	if (placement (N,qPlacement,row,column,filled)==true){
 
+		cout<<"program ending...";
 		return 0;
 	}
 
