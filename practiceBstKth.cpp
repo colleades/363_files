@@ -9,7 +9,43 @@ struct Node {
 	Node *right;
 };
 
-// Function to print Nodes in a binary tree in Level order
+void printLevelOrder(node *root) 
+{ 
+    // Base Case 
+    if (root == NULL)  return; 
+  
+    // Create an empty queue for level order tarversal 
+    queue<node *> q; 
+  
+    // Enqueue Root and initialize height 
+    q.push(root); 
+  
+    while (1) 
+    { 
+        // nodeCount (queue size) indicates number of nodes 
+        // at current lelvel. 
+        int nodeCount = q.size(); 
+        if (nodeCount == 0) 
+            break; 
+  
+        // Dequeue all nodes of current level and Enqueue all 
+        // nodes of next level 
+        while (nodeCount > 0) 
+        { 
+            node *node = q.front(); 
+            cout << node->data << " "; 
+            q.pop(); 
+            if (node->left != NULL) 
+                q.push(node->left); 
+            if (node->right != NULL) 
+                q.push(node->right); 
+            nodeCount--; 
+        } 
+        cout << endl; 
+    } 
+} 
+
+/*// Function to print Nodes in a binary tree in Level order
 void LevelOrder(Node *root) {
 	if(root == NULL) return;
 	queue<Node*> Q;
@@ -22,7 +58,7 @@ void LevelOrder(Node *root) {
 		if(current->left != NULL) Q.push(current->left);
 		if(current->right != NULL) Q.push(current->right);
 	}
-}
+}*/
 // Function to Insert Node in a Binary Search Tree
 Node* Insert(Node *root,int data) {
 	if(root == NULL) {
@@ -49,5 +85,5 @@ int main() {
 	root = Insert(root,52);
 	
 	//Print Nodes in Level Order. 
-	LevelOrder(root);
+	PrintLevelOrder(root);
 }
