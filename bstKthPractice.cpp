@@ -1,87 +1,66 @@
-// C++ program to insert element in binary tree 
-#include <iostream> 
-#include <queue> 
-using namespace std; 
+// Binary Search Tree - Implemenation in C++
+// Simple program to create a BST of integers and search an element in it 
+#include<iostream>
+using namespace std;
+//Definition of Node for Binary search tree
+struct BstNode {
+	int data; 
+	BstNode* left;
+	BstNode* right;
+};
 
-/* A binary tree node has key, pointer to left child 
-and a pointer to right child */
-struct Node { 
-	int key; 
-	struct Node* left, *right; 
-}; 
+// Function to create a new Node in heap
+BstNode* GetNewNode(int data) {
+	BstNode* newNode = new BstNode();
+	newNode->data = data;
+	newNode->left = newNode->right = NULL;
+	return newNode;
+}
 
-/* function to create a new node of tree and r 
-eturns pointer */
-struct Node* newNode(int key) 
-{ 
-	struct Node* temp = new Node; 
-	temp->key = key; 
-	temp->left = temp->right = NULL; 
-	return temp; 
-}; 
-
-/* Inorder traversal of a binary tree*/
-void inorder(struct Node* temp) 
-{ 
-	if (!temp) 
-		return; 
-
-	inorder(temp->left); 
-	cout << temp->key << " "; 
-	inorder(temp->right); 
-} 
-
-/*function to insert element in binary tree */
-void insert(struct Node* temp, int key) 
-{ 
-	queue<struct Node*> q; 
-	q.push(temp); 
-
-	// Do level order traversal until we find 
-	// an empty place. 
-	while (!q.empty()) { 
-		struct Node* temp = q.front(); 
-		q.pop(); 
-
-		if (!temp->left) { 
-			temp->left = newNode(key); 
-			break; 
-		} else
-			q.push(temp->left); 
-
-		if (!temp->right) { 
-			temp->right = newNode(key); 
-			break; 
-		} else
-			q.push(temp->right); 
-	} 
-} 
-
-// Driver code 
-int main() 
-{ 
-	struct Node* root = newNode(10); 
-	 
-    //int for data passed in 
-    int dataPassed, key;
-    
-	cout << "Inorder traversal before insertion:"; 
-	inorder(root); 
-	
-	cout<<"Enter tree keys";
-	for (int i=1; i<=15; i++){
-	    
-	    cout<<"\nelement "<<i<<" : ";
-	    cin>>dataPassed;
-	    insert(root, key);
+// To insert data in BST, returns address of root node 
+BstNode* Insert(BstNode* root,int data) {
+	if(root == NULL) { // empty tree
+		root = GetNewNode(data);
 	}
-
-	//int key = 12; 
-	//insert(root, key); 
-
-	cout << endl; 
-	cout << "Inorder traversal after insertion:"; 
-	inorder(root); 
-
-	return 0; 
-} 
+	// if data to be inserted is lesser, insert in left subtree. 
+	else if(data <= root->data) {
+		root->left = Insert(root->left,data);
+	}
+	// else, insert in right subtree. 
+	else {
+		root->right = Insert(root->right,data);
+	}
+	return root;
+}
+//To search an element in BST, returns true if element is found
+bool Search(BstNode* root,int data) {
+	if(root == NULL) {
+		return false;
+	}
+	else if(root->data == data) {
+		return true;
+	}
+	else if(data <= root->data) {
+		return Search(root->left,data);
+	}
+	else {
+		return Search(root->right,data);
+	}
+}
+int main() {
+	BstNode* root = NULL;  // Creating an empty tree
+	/*Code to test the logic*/
+	root = Insert(root,15);	
+	root = Insert(root,10);	
+	root = Insert(root,20);
+	root = Insert(root,25);
+	root = Insert(root,8);
+	root = Insert(root,12);
+	// Ask user to enter a number.  
+	int number;
+	cout<<"Enter number be searched\n";
+	cin>>number;
+	//If number is found, print "FOUND"
+	if(Search(root,number) == true) cout<<"Found\n";
+	else cout<<"Not Found\n";
+}
