@@ -32,21 +32,9 @@ BstNode* Insert(BstNode* root,int data) {
 	}
 	return root;
 }
-//To search an element in BST, returns true if element is found
-bool Search(BstNode* root,int data) {
-	if(root == NULL) {
-		return false;
-	}
-	else if(root->data == data) {
-		return true;
-	}
-	else if(data <= root->data) {
-		return Search(root->left,data);
-	}
-	else {
-		return Search(root->right,data);
-	}
-}
+
+	
+
 int main() {
 	BstNode* root = NULL;  // Creating an empty tree
 	/*Code to test the logic*/
@@ -56,11 +44,6 @@ int main() {
 	root = Insert(root,25);
 	root = Insert(root,8);
 	root = Insert(root,12);
-	// Ask user to enter a number.  
-	int number;
-	cout<<"Enter number be searched\n";
-	cin>>number;
-	//If number is found, print "FOUND"
-	if(Search(root,number) == true) cout<<"Found\n";
-	else cout<<"Not Found\n";
+
+	cout<<"Tree created\n";
 }
