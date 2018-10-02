@@ -9,13 +9,14 @@ struct Node {
 	Node *right;
 };
 
-void printLevelOrder(node *root) 
+// Iterative method to do level order traversal line by line 
+void PrintLevelOrder(Node *root) 
 { 
     // Base Case 
     if (root == NULL)  return; 
   
     // Create an empty queue for level order tarversal 
-    queue<node *> q; 
+    queue<Node *> q; 
   
     // Enqueue Root and initialize height 
     q.push(root); 
@@ -32,7 +33,7 @@ void printLevelOrder(node *root)
         // nodes of next level 
         while (nodeCount > 0) 
         { 
-            node *node = q.front(); 
+            Node *node = q.front(); 
             cout << node->data << " "; 
             q.pop(); 
             if (node->left != NULL) 
@@ -43,22 +44,46 @@ void printLevelOrder(node *root)
         } 
         cout << endl; 
     } 
-} 
+}
 
-/*// Function to print Nodes in a binary tree in Level order
-void LevelOrder(Node *root) {
-	if(root == NULL) return;
-	queue<Node*> Q;
-	Q.push(root);  
-	//while there is at least one discovered node
-	while(!Q.empty()) {
-		Node* current = Q.front();
-		Q.pop(); // removing the element at front
-		cout<<current->data<<" ";
-		if(current->left != NULL) Q.push(current->left);
-		if(current->right != NULL) Q.push(current->right);
+//function for In Order traversal (to calculate k)
+int InOrder(Node* root, int kth, int counter){
+
+	//if there have been 15 node's data  printed, return smallest element
+	//THIS COULD EASILY BE CHANGED TO BE DYNAMIC TO MORE THAN 15 
+	if (counter==15){
+		return kth;
 	}
-}*/
+
+	if(root != NULL){
+
+		if (root->left != NULL){
+
+			//go to next node to the left 
+			InOrder(root->left, kth, counter);
+		}
+
+		//if the current parse number  == declared k, set that data to k
+		if (counter==kth){
+
+			kth=root->data;
+		}
+	
+		//increase counter
+		counter=counter+1;
+		
+		if (root->right !=NULL){
+
+			//go to next node to the right
+			InOrder(root->right, kth, counter);
+		}
+	}else{
+
+		cout<< "\nThe tree is empty.  Cannot print.";
+	}
+}
+
+
 // Function to Insert Node in a Binary Search Tree
 Node* Insert(Node *root,int data) {
 	if(root == NULL) {
@@ -74,6 +99,12 @@ Node* Insert(Node *root,int data) {
 int main() {
 	//Code To Test the logic
 	//Creating an example tree
+	
+	int k;
+
+	//prompt for k
+	cout<<"What is K: ";
+	cin>>k;
 
 	Node* root = NULL;
 	
