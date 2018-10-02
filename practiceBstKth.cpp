@@ -102,6 +102,9 @@ int main() {
 
 	//variable for inputted array keys and K variables
 	int dataPassed, k;
+	
+	//counter to help with k calculation
+	int counter=1;
 
 
 	//prompt for k
@@ -120,7 +123,11 @@ int main() {
 	//Print Nodes in Level Order. 
 	PrintLevelOrder(root);
 
+	cout<<"K initially: "<<k;
 	//find K
+	k=InOrder(root, k, counter);
+
+	cout<<"\nThe Kth smallest element is: "<<k<<"\n";
 	
 }
 
