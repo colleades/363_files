@@ -97,10 +97,12 @@ Node* Insert(Node *root,int data) {
 }
 
 int main() {
-	//Code To Test the logic
-	//Creating an example tree
 	
-	int k;
+	int array[15] = {6, 17, 20, 41, 45, 52, 57, 65, 71, 76, 79, 87, 92, 95, 99};
+
+	//variable for inputted array keys and K variables
+	int dataPassed, k;
+
 
 	//prompt for k
 	cout<<"What is K: ";
@@ -108,13 +110,38 @@ int main() {
 
 	Node* root = NULL;
 	
-	root = Insert(root,6); 
-	root = Insert(root,17);
-	root = Insert(root,20); 
-	root = Insert(root,41); 
-	root = Insert(root,45); 
-	root = Insert(root,52);
+	//for every array key, insert it into tree
+	for (int i=0; i<15; i++){
+
+		dataPassed=array[i];
+		root = Insert(root, dataPassed);
+	}
 	
 	//Print Nodes in Level Order. 
 	PrintLevelOrder(root);
+
+	//find K
+	
 }
+
+
+	/*
+	//counter to pass to print to help calculate kth smallest
+	int counter=1;
+
+
+	promt for value of k
+	cout<<"\nHello. Please enter a value for K: ";
+	cin>>k;
+	
+	//data is inputted into tree
+	for (int i=1; i<=15; i++){
+
+		dataPassed=array[i];
+		root = Insert(root, dataPassed);
+	}
+
+		
+	cout<<"\nThank you.  Printing tree based off assignment array...  \n\n";
+	*/
+
