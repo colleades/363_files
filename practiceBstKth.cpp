@@ -1,4 +1,3 @@
-/* Binary tree - Level Order Traversal */
 #include<iostream>
 #include<queue>
 using namespace std;
@@ -9,41 +8,25 @@ struct Node {
 	Node *right;
 };
 
-// Iterative method to do level order traversal line by line 
-void PrintLevelOrder(Node *root) 
-{ 
-    // Base Case 
-    if (root == NULL)  return; 
-  
-    // Create an empty queue for level order tarversal 
-    queue<Node *> q; 
-  
-    // Enqueue Root and initialize height 
-    q.push(root); 
-  
-    while (1) 
-    { 
-        // nodeCount (queue size) indicates number of nodes 
-        // at current lelvel. 
-        int nodeCount = q.size(); 
-        if (nodeCount == 0) 
-            break; 
-  
-        // Dequeue all nodes of current level and Enqueue all 
-        // nodes of next level 
-        while (nodeCount > 0) 
-        { 
-            Node *node = q.front(); 
-            cout << node->data << " "; 
-            q.pop(); 
-            if (node->left != NULL) 
-                q.push(node->left); 
-            if (node->right != NULL) 
-                q.push(node->right); 
-            nodeCount--; 
-        } 
-        cout << endl; 
-    } 
+void printLevelByLevel(Node* root){
+
+	queue<Node* > q;
+
+	q.push(root);
+
+	while(q.size() > 0){
+
+		int currentLevelNodes = q.size();
+		while (currentLevelNodes > 0){
+			Node* p = q.front();
+			q.pop();
+			cout<<" "<<p->data;
+			if (p->left !=NULL) q.push(p->left);
+			if (p->right !=NULL) q.push(p->right);
+			currentLevelNodes--;
+		}
+		cout << endl;
+	}
 }
 
 //function for In Order traversal (to calculate k)
@@ -108,9 +91,11 @@ int main() {
 
 
 	//prompt for k
-	cout<<"What is K: ";
+	cout<<"Hello.  Please enter a value for K < 15: ";
 	cin>>k;
+	cout<<"\n\nThank you.  Printing Tree. . . \n\n";
 
+	//create null root to be filled later
 	Node* root = NULL;
 	
 	//for every array key, insert it into tree
@@ -121,34 +106,13 @@ int main() {
 	}
 	
 	//Print Nodes in Level Order. 
-	PrintLevelOrder(root);
+	printLevelByLevel(root);
 
-	cout<<"K initially: "<<k;
-	//find K
+	//find K using in order function
 	k=InOrder(root, k, counter);
 
 	cout<<"\nThe Kth smallest element is: "<<k<<"\n";
 	
 }
 
-
-	/*
-	//counter to pass to print to help calculate kth smallest
-	int counter=1;
-
-
-	promt for value of k
-	cout<<"\nHello. Please enter a value for K: ";
-	cin>>k;
-	
-	//data is inputted into tree
-	for (int i=1; i<=15; i++){
-
-		dataPassed=array[i];
-		root = Insert(root, dataPassed);
-	}
-
-		
-	cout<<"\nThank you.  Printing tree based off assignment array...  \n\n";
-	*/
 
