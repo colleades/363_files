@@ -85,15 +85,22 @@ class HashTable
 			int value2=int(char2);
 
 			//cout<<"\nAscii values: "<<value1<<" and "<<value2<<"\n";
+			if(value1 <= 'Z'){ 
+				value1 = (value1 - 'A' + 1) % 27 * 10000;
+			}
+			else {value1 = (value1 - 'a' + 1) % 27 * 100;}
 
-			int charCombined = (value1 % 26) * 100 + (value2 % 26);
+			if(value2 <= 'Z'){value2 = (value2 - 'A') % 26;}
+			else {value2 = (value2 - 'a') % 26;}
+
+			int charCombined = value1 + value2;
 
 			//cout<<"\nValue before modulo: "<<charCombined<<"\n";
 
 			
 			int hashValue = charCombined % TABLE_SIZE;
 			
-			cout<<"\nThe hashValue is: "<<hashValue<<"\n";
+			cout<<"\nhashValue is: "<<hashValue<<"\n";
 			
 			return hashValue;	
 		}
@@ -135,14 +142,12 @@ class HashTable
 				{
 					//move to the next node and create entry
 					prev->next = entry;
-					cout<<"created entry in next slot\n";
 				}
 			}
-			//else
-		//	{
-			entry->value=value;
-			cout<<"This is the value: "<<value<<"\n";
-		//	}
+			else
+			{
+				entry->value=value;
+			}
 		}
 
 		//remove element at a key
@@ -183,7 +188,7 @@ class HashTable
 				//If the word is found in the list (if current key is equal to key being searched)
 				if (entry->key == key)
 				{
-					cout<<"\nTrue.  The word has been found.  Here are some suggested words: ";
+					cout<<"\n$True. \n";
 					flag = true;
 				}
 
@@ -229,28 +234,7 @@ int main()
 	//user selection
 	if (choice==1){
 
-		key="iterate";
-		value=key;
-		hash.Insert(key, value);
-		key="itm";
-		value=key;
-		hash.Insert(key, value);
-
-		//read in text file
-		/*
-		ifstream myfile;
-		myfile.open ("Dictionary.txt");
-		while (!myfile.eof()){
-
-			cout<<"HEY";
-			getline(myfile,key);
-			cout<<key;
-		}
-		myfile.close();
-
-		//TimeInterval::start()
-		
-	*/	ifstream myfile ("Dictionary.txt");
+		ifstream myfile ("Dictionary.txt");
 		if (myfile.is_open())
 		{
 			int i=0;
@@ -258,11 +242,10 @@ int main()
 			{
 				//hash each line/string/word
 				//set key and value to current word
-				
 				key=line;
 				key=key.substr(0, key.length()-1);
 				value=key;
-				cout<<"THIS IS INSIDE READIN Function: "<<key<<" "<<value;
+				cout<<"\nKey: "<<key;
 				
 				//pass to hash functions
 				hash.Insert(key, value);
@@ -271,7 +254,7 @@ int main()
 			}
 			myfile.close();
 
-			cout<<"\nTxt file has been hashed!\n";
+			cout<<"\nText file has been hashed!\n";
 		}
 
 		//backup if file can't be found
@@ -285,7 +268,7 @@ int main()
 		{
 			//THIS IS WHERE YOU WOULD SAY "FALSE" BC SEARCHED WORD DOESN'T EXIST
 			//BUT IF IT DOES, ALL OTHER KEYS CLOSE TO IT ARE PRINTED
-			cout<<"False.  The word '"<<key<<"' was not found"<<endl;
+			cout<<"$False.  The word '"<<key<<"' was not found"<<endl;
 
 		}
 			
@@ -297,63 +280,8 @@ int main()
 
 		cout<<"\nPlease make a valid selection";
 	}
-	/*
-	int choice;
-	while (1)
-	{
-		cout<<"\n-----------------------"<<endl;
-		cout<<"Operations on Hash table"<<endl;
-		cout<<"\n---------------------"<<endl;
-		cout<<"1. insert"<<endl;
-		cout<<"2. search"<<endl;
-		cout<<"3 delete"<<endl;
-		cout<<"4 exit"<<endl;
-		cout<<"Enter your choice: ";
-		cin>>choice;
-		switch(choice)
-		{
-
-		case 1:
-			
 		
-		case 2:
-							continue;
-			}
-			break;
-		case 3:
-			cout<<"Enter key of the element to be deleted: ";
-			cin>>key;
-			hash.Remove(key);
-			break;
-		case 4:
-			exit(1);
-		default:
-			cout<<"\nEnter corrent optiont\n";
-
-
-		}*/
-	
 	return 0;
 }
-
-
-
-
-/*int main () {
-	
-	string line;
-	ifstream myfile ("Dictionary.txt");
-	if (myfile.is_open()){
-		while (getline (myfile, line)){
-
-			cout<<line<<'\n';
-		}
-		myfile.close();
-	}
-
-	else cout<<"Unable to open file";
-
-	return 0;
-}*/
 
 
