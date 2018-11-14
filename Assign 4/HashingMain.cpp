@@ -5,6 +5,7 @@
 #include<cstdio>
 #include<cstdlib>
 #include<bits/stdc++.h>
+//#include <TimeInterval.h>
 using namespace std;
 
 //table size able to handle all two letter combinations + all one letter possibilities (703)
@@ -85,7 +86,7 @@ class HashTable
 
 			//cout<<"\nAscii values: "<<value1<<" and "<<value2<<"\n";
 
-			int charCombined = (char1)+(char2*2);
+			int charCombined = (value1 % 26) * 100 + (value2 % 26);
 
 			//cout<<"\nValue before modulo: "<<charCombined<<"\n";
 
@@ -100,6 +101,7 @@ class HashTable
 		//insert element at a key
 		void Insert(string key, string value)
 		{
+			//cout<<"THIS IS INTERESTING: "<<key<<" "<<value;
 			int hash_val = HashFunc(key);
 
 			//pointer to most recent node in list
@@ -117,24 +119,30 @@ class HashTable
 				entry = entry->next;
 			}
 
-			//if there are no nodes in the selected slot in table
+			//if you've reached an empty spot
 			if (entry == NULL)
 			{
 				//create a new node
 				entry = new HashNode(key, value);
+
+				//if the previous node is null
 				if (prev == NULL)
 				{
+					//create first entry in current hashing slot in array
 					htable[hash_val]=entry;
 				}
 				else
 				{
+					//move to the next node and create entry
 					prev->next = entry;
+					cout<<"created entry in next slot\n";
 				}
 			}
-			else
-			{
-				entry->value=value;
-			}
+			//else
+		//	{
+			entry->value=value;
+			cout<<"This is the value: "<<value<<"\n";
+		//	}
 		}
 
 		//remove element at a key
@@ -192,22 +200,16 @@ class HashTable
 				while (entry != NULL)
 				{
 					//If current node being traversed is searched word, don't print it
-					if (entry->key == key)
+					if (entry->key != key)
 					{
 						//don't print word originally searched
-					}else{
-	
 						cout<<"\n"<<entry->key<<"\n";
 					}
 
 					//go on to next node
 					entry = entry->next;
 				}
-
-
-
 			}
-
 		}
 };
 
@@ -227,26 +229,44 @@ int main()
 	//user selection
 	if (choice==1){
 
-		key="world";
+		key="iterate";
 		value=key;
 		hash.Insert(key, value);
-		key="wonder";
+		key="itm";
 		value=key;
 		hash.Insert(key, value);
 
-		/*//read in text file
-		ifstream myfile ("Dictionary.txt");
+		//read in text file
+		/*
+		ifstream myfile;
+		myfile.open ("Dictionary.txt");
+		while (!myfile.eof()){
+
+			cout<<"HEY";
+			getline(myfile,key);
+			cout<<key;
+		}
+		myfile.close();
+
+		//TimeInterval::start()
+		
+	*/	ifstream myfile ("Dictionary.txt");
 		if (myfile.is_open())
 		{
+			int i=0;
 			while (getline (myfile, line))
 			{
 				//hash each line/string/word
 				//set key and value to current word
+				
 				key=line;
+				key=key.substr(0, key.length()-1);
 				value=key;
+				cout<<"THIS IS INSIDE READIN Function: "<<key<<" "<<value;
 				
 				//pass to hash functions
 				hash.Insert(key, value);
+				i++;
 
 			}
 			myfile.close();
@@ -255,8 +275,8 @@ int main()
 		}
 
 		//backup if file can't be found
-		else cout<<"Unable to find or open file";
-*/
+		//else cout<<"Unable to find or open file";
+
 		//prompt user to search for a word
 		cout<<"Enter a word to be searched: ";
 		cin>>key;
