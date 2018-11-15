@@ -5,7 +5,9 @@
 #include<cstdio>
 #include<cstdlib>
 #include<bits/stdc++.h>
-//#include <TimeInterval.h>
+#include "TimeInterval.h"
+
+
 using namespace std;
 
 //table size able to handle all two letter combinations + all one letter possibilities (703)
@@ -38,35 +40,20 @@ class HashTable
 		HashTable()
 		{
 			htable = new HashNode*[TABLE_SIZE];
+			//originally set all slots in table to NULL
 			for (int i = 0; i < TABLE_SIZE; i++)
 				htable[i]=NULL;
-		}
-
-		~HashTable()
-		{
-			for (int i = 0; i < TABLE_SIZE; ++i)
-			{
-				HashNode* entry = htable[i];
-				while (entry != NULL)
-				{
-					HashNode* prev = entry;
-					entry = entry->next;
-					delete prev;
-				}
-			}
-			delete[] htable;
 		}
 
 		//Hash function
 		//
 		//turns string into array, uses first two characters in that array (first two letters of word)
-		//calculates ascii of each and adds weight to each before adding them together and returning 
+		//calculates ascii of each and adds weight before adding them together, taking modulo of tablesize, and returning 
 		//as hash value
 		int HashFunc(string key)
 		{
 			//length of character array
 			int n = key.length();
-			//cout<<"\nThis is length of array: "<<n<<"\n";
 			
 			//declare array
 			char char_array[n+1];
@@ -74,32 +61,26 @@ class HashTable
 			//copy string into array
 			strcpy(char_array, key.c_str());
 
-			//get ascii value of first two letters of word
+			//get first two letters of word
 			char char1 = char_array[0];
 			char char2 = char_array[1];
 
-			
-			//cout<<"\nfirst char of array is: "<<char1<<" And 2nd char is: "<<char2<<"\n";
-			
+			//turn first to letters into integers from 0 to n
 			int value1=int(char1)-65;
 			int value2=int(char2)-65;
 
+			//if it's a one letter word, set second "letter" value to zero
 			if (value2<0){
 				value2=0;
 			}
 
-			cout<<"\nValues of value1: "<<value1<<" ";
-			cout<<"\nValues of value2: "<<value2<<" ";
+			//combine characters, adding weight to first in a way that guarentees minimal collisions
+			//aka number of possible different character entries (28)
+			int charCombined = (value1*28) + value2;
 
-			//cout<<"\nAscii values: "<<value1<<" and "<<value2<<"\n";
-			int charCombined = (value1*26) + value2;
-
-			//cout<<"\nValue before modulo: "<<charCombined<<"\n";
-
-			
 			int hashValue = charCombined % TABLE_SIZE;
 			
-			cout<<"\nhashValue is: "<<hashValue<<"\n";
+			//cout<<"\nhashValue is: "<<hashValue<<"\n";
 			
 			return hashValue;	
 		}
@@ -107,7 +88,6 @@ class HashTable
 		//insert element at a key
 		void Insert(string key, string value)
 		{
-			//cout<<"THIS IS INTERESTING: "<<key<<" "<<value;
 			int hash_val = HashFunc(key);
 
 			//pointer to most recent node in list
@@ -149,35 +129,19 @@ class HashTable
 			}
 		}
 
-		//remove element at a key
-		void Remove(string key)
-		{
-			int hash_val = HashFunc(key);
-			HashNode* entry = htable[hash_val];
-			HashNode* prev=NULL;
-
-			if (entry == NULL || entry->key != key)
-			{
-				cout<<"No Element found at key "<<key<<endl;
-				return;
-			}
-			while (entry->next != NULL)
-			{
-				prev = entry;
-				entry = entry->next;
-			}
-			if (prev != NULL)
-			{
-				prev->next = entry -> next;
-			}
-			delete entry;
-			cout<<"Element Deleted"<<endl;
-		}
-
 		//search element at a key
 		int Search(string key)
 		{
+			//create timer object
+			TimeInterval * myTimeInt = new TimeInterval();
+
+			//start timer
+			myTimeInt->start();
+
+			//flag for indicating whether or not the word has been found
 			bool flag = false;
+
+			//find hash value and look at that slot value in hash table (array)
 			int hash_val = HashFunc(key);
 			HashNode* entry = htable[hash_val];
 
@@ -189,7 +153,9 @@ class HashTable
 				{
 					cout<<"\n$True. \n";
 					flag = true;
-					//TimeInterval::stop();
+					
+					//stop timer
+					myTimeInt->stop();
 				}
 
 				//go on to next node
@@ -215,6 +181,9 @@ class HashTable
 					entry = entry->next;
 				}
 			}
+
+			//after printing all words, print time
+			cout<<"\nSearch time: "<<myTimeInt->GetInterval()<<" micro-sec\n\n";
 		}
 };
 
@@ -234,6 +203,7 @@ int main()
 	//user selection
 	if (choice==1){
 
+
 		ifstream myfile ("Dictionary.txt");
 		if (myfile.is_open())
 		{
@@ -241,11 +211,10 @@ int main()
 			while (getline (myfile, line))
 			{
 				//hash each line/string/word
-				//set key and value to current word
+				//set key and value to current word, minus last character (to avoid new line) (\n) 
 				key=line;
 				key=key.substr(0, key.length()-1);
 				value=key;
-				cout<<"\nKey: "<<key;
 				
 				//pass to hash functions
 				hash.Insert(key, value);
@@ -258,20 +227,17 @@ int main()
 		}
 
 		//backup if file can't be found
-		//else cout<<"Unable to find or open file";
+		else cout<<"Unable to find or open file";
+
 
 		//prompt user to search for a word
-		cout<<"Enter a word to be searched: ";
+		cout<<"\nEnter a word to be searched: ";
 		cin>>key;
-		//TimeInterval::start();
-		//cout<<"Element at key "<<key<<" : ";
+
+		//if word is not found
 		if (hash.Search(key) == -1)
 		{
-			//TimeInterval::stop();
-			cout<<"$False.  The word '"<<key<<"' was not found"<<endl;
-
-
-
+			cout<<"\n$False.  The word '"<<key<<"' was not found\n"<<endl;
 		}
 			
 	}else if (choice==2){
