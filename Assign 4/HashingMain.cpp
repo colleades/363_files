@@ -81,19 +81,18 @@ class HashTable
 			
 			//cout<<"\nfirst char of array is: "<<char1<<" And 2nd char is: "<<char2<<"\n";
 			
-			int value1=int(char1);
-			int value2=int(char2);
+			int value1=int(char1)-65;
+			int value2=int(char2)-65;
+
+			if (value2<0){
+				value2=0;
+			}
+
+			cout<<"\nValues of value1: "<<value1<<" ";
+			cout<<"\nValues of value2: "<<value2<<" ";
 
 			//cout<<"\nAscii values: "<<value1<<" and "<<value2<<"\n";
-			if(value1 <= 'Z'){ 
-				value1 = (value1 - 'A' + 1) % 27 * 10000;
-			}
-			else {value1 = (value1 - 'a' + 1) % 27 * 100;}
-
-			if(value2 <= 'Z'){value2 = (value2 - 'A') % 26;}
-			else {value2 = (value2 - 'a') % 26;}
-
-			int charCombined = value1 + value2;
+			int charCombined = (value1*26) + value2;
 
 			//cout<<"\nValue before modulo: "<<charCombined<<"\n";
 
@@ -190,6 +189,7 @@ class HashTable
 				{
 					cout<<"\n$True. \n";
 					flag = true;
+					//TimeInterval::stop();
 				}
 
 				//go on to next node
@@ -263,12 +263,14 @@ int main()
 		//prompt user to search for a word
 		cout<<"Enter a word to be searched: ";
 		cin>>key;
+		//TimeInterval::start();
 		//cout<<"Element at key "<<key<<" : ";
 		if (hash.Search(key) == -1)
 		{
-			//THIS IS WHERE YOU WOULD SAY "FALSE" BC SEARCHED WORD DOESN'T EXIST
-			//BUT IF IT DOES, ALL OTHER KEYS CLOSE TO IT ARE PRINTED
+			//TimeInterval::stop();
 			cout<<"$False.  The word '"<<key<<"' was not found"<<endl;
+
+
 
 		}
 			
