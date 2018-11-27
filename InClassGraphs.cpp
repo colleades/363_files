@@ -14,6 +14,7 @@ int minDistance(int dist[], bool sptSet[])
    // Initialize min value 
    int min = INT_MAX, min_index; 
    
+   //step through both arrays, if vertex not visited is found and the distance of that vertex is the smallest number
    for (int v = 0; v < V; v++) 
      if (sptSet[v] == false && dist[v] <= min) 
          min = dist[v], min_index = v; 
@@ -32,10 +33,12 @@ int printSolution(int dist[], int n)
 // Function that implements Dijkstra's single source shortest path algorithm 
 // for a graph represented using adjacency matrix representation 
 void dijkstra(int graph[V][V], int src) 
-{ 
+{     
+     //this array holds distance of vertex (which doubles as index of array), to src
      int dist[V];     // The output array.  dist[i] will hold the shortest 
                       // distance from src to i 
    
+     //shows whether a particular vertex (doubles as index of array) has been visited/set 
      bool sptSet[V]; // sptSet[i] will be true if vertex i is included in shortest 
                      // path tree or shortest distance from src to i is finalized 
    
